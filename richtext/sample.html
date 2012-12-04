@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Richtext sample</title>
+
+		<!-- The dependecies -->
+		<script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min.js"></script>
+		<script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+
+		<!-- The backbone component in question : rich text baby ! -->
+		<script type="text/javascript" src="richtext.backbone.js"></script>
+
+		<!-- Some styles : you may reuse them ! -->
+		<style>
+			body { padding:30px;}
+
+			.bb-rich-text-toolbar { margin-bottom:15px;}
+			.bb-rich-text-toolbar > div[data-for-action] { display:inline-block; margin-right:10px;}
+			.bb-rich-text-toolbar > div > button { 	text-indent:-999px; background-color:none; border:0; width:20px; height:20px; }
+			
+			.bb-rich-text-toolbar-bold { background-image:url('buttons.png'); background-position: 0px 0px; }
+			.bb-rich-text-toolbar-bold:hover { background-position: 0px -20px; cursor:pointer; }
+			.bb-rich-text-toolbar-italic { background-image:url('buttons.png'); background-position: -20px 0px; }
+			.bb-rich-text-toolbar-italic:hover { background-position: -20px -20px; cursor:pointer; }
+			.bb-rich-text-toolbar-ol { background-image:url('buttons.png'); background-position: -40px 0px; }
+			.bb-rich-text-toolbar-ol:hover { background-position: -40px -20px; cursor:pointer; }
+			.bb-rich-text-toolbar-ul { background-image:url('buttons.png'); background-position: -60px 0px; }
+			.bb-rich-text-toolbar-ul:hover { background-position: -60px -20px; cursor:pointer; }
+			.bb-rich-text-toolbar-color { background-image:url('buttons.png'); background-position: -80px 0px; }
+			.bb-rich-text-toolbar-color:hover { background-position: -80px -20px; cursor:pointer; }
+
+			.bb-rich-text-editor { padding:10px; border: 1px solid #999; }
+
+			.bb-rich-text-toolbar-color-palette { border-top:1px solid #999;border-bottom:1px solid #999; background-image: linear-gradient(top, #bbb, #ddd, #bbb); background-color:#eee; width:100%; margin-bottom:15px;} /** Use prefix free !! */
+			.bb-rich-text-toolbar-color-palette span { vertical-align: middle; display: inline-block; margin-left:10px; }
+			.bb-rich-text-toolbar-color-palette-list { list-style:none; padding:0px; margin:5px; display:inline-block;  }
+			.bb-rich-text-toolbar-color-palette-list li { border:1px solid #bbb; display:inline-block; margin-right:5px; }
+			.bb-rich-text-toolbar-color-palette-list li button { width:22px; height:22px; margin:2px; border:0; }
+			.bb-rich-text-toolbar-color-palette-add { display:inline-block; }
+			.bb-rich-text-toolbar-color-palette-add-preview { width:20px; height:20px; border:1px solid #aaa; display:inline-block; vertical-align: bottom; }
+			.bb-rich-text-toolbar-color-palette-add-button { display:inline-block; }
+
+
+		</style>
+	</head>
+
+	<body>
+		<textarea id="sample" class="sample-class">
+			intial <b>fucking bolded</b><br/><br/>multi lined</br/> value
+		</textarea>
+
+		<!-- Templates -->
+		<script type="html/template" id="bb-rich-text-toolbar-color-palette">
+			<span>Couleur du texte</span>
+			<ul class="bb-rich-text-toolbar-color-palette-list">
+				<% _.each(colors, function(color){ %>
+					<li><button style="background-color:<%= color.hex %>" data-color="<%= color.hex %>"></button></li>
+				<% }) %>
+			</ul>
+			<div class="bb-rich-text-toolbar-color-palette-add">
+				#<input type="text" maxlength="6" class="bb-rich-text-toolbar-color-palette-add-input" placeholder="rrvvbb"/>
+				<div class="bb-rich-text-toolbar-color-palette-add-preview"></div>
+				<button class="bb-rich-text-toolbar-color-palette-add-button">Ajouter</button>
+			</div>
+
+		</script>
+
+		<!-- Component initialization -->
+		<script>
+			new BBRichTextView({
+		    	el:'#sample',
+		    	model:new BBRichTextModel(),
+		    	config: {
+		    		buttons: "bold,italic,color,ul,ol"
+		    	}
+		    });
+		</script>
+
+	</body>
+</html>
